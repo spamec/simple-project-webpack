@@ -1,17 +1,28 @@
-{
-    "use": [
-        "autoprefixer",
-        "postcss-import",
-        "postcss-simple-vars",
-        "postcss-extend",
-        "postcss-nested",
-        "postcss-mixins"
+var config = {
+    use: [
+        'postcss-cssnext',
+        'postcss-import',
+        'postcss-custom-properties',
+        'postcss-nesting',
+        'postcss-calc',
     ],
-    "input": "css/main.css",
-    "output": "public/main.css",
-    "local-plugins": true,
-    "watch": true,
-    "autoprefixer": {
-        "browsers": "> 5%"
-    }
-}
+    'autoprefixer': {
+        browsers: '> 5%'
+    },
+    'postcssCssnext': {
+        features: {
+            autoprefixer: true
+        }
+    },
+    plugins: [
+        require('cssnano')({
+            preset: 'default',
+        }),
+    ],
+    // Other options such as input and output
+};
+
+module.exports = config;
+
+
+

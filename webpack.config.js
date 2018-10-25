@@ -1,50 +1,42 @@
-/*
-const webpack = require('webpack');
-const path = require('path');
-
-
-module.exports = {
-    entry: path.join(__dirname, 'src/main.js'),
-    output: {
-        path: path.join(__dirname, 'dist'),
-        filename: 'main.min.js'
-    }
-};
-*/
-
-
 const path = require('path');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
-const extractCSS = new ExtractTextPlugin({ filename: 'css.bundle.css' })
+const extractCSS = new ExtractTextPlugin({filename: 'css.bundle.css'})
 
 module.exports = {
-    entry: [
-        './src/main.js',
-    ],
+    entry: {
+        'bundle.js': [
+            './src/main.js'
+        ], 'bundle.css': [
+            './src/main.css',
+            './src/modules/someModule/someModule.css'
+        ]
+    },
     output: {
-        path: path.join(__dirname, 'dist'),
-        filename: 'main.bundle.js'
+        filename: '[name]',
+        path: path.resolve(__dirname, 'dist')
     },
     // devtool: "source-map",
     module: {
-        rules: [{
-            test: /\.css$/,
-            use: ExtractTextPlugin.extract({
-                use: [{
-                    loader: "css-loader",
-                    options: {
-                        sourceMap: true,
-                        minimize: true,
-                        url: false
-                    }
-                }
-                ]
-            })
-        },
+        rules: [
+            {
+                test: /\.js/,
+                loader: 'babel-loader',
+                exclude: /(node_modules|bower_components)/
+            }, {
+                test: /\.css$/,
+                use: ExtractTextPlugin.extract({
+                    fallback: 'style-loader',
+                    use: [
+                        {loader: 'css-loader', options: {importLoaders: 1}},
+                        'postcss-loader'
+                    ]
+                })
+            }
         ]
     },
     plugins: [
-        extractCSS
+        new ExtractTextPlugin("[name]"),
+
     ]
 };
 
