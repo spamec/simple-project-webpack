@@ -1,0 +1,28 @@
+
+:root{
+    --white: #fff;
+    --green: #43973a;
+    --top:20px;
+}
+
+.some{
+    height:var(--top)
+}
+
+.some2{
+    height: var(--top);
+    background-color: var(--green);
+}
+
+@media screen and (orientation: landscape) and (max-device-width: 820px) {
+    :root{
+        --top:10px;
+    }
+
+    .some{
+        height:var(--top)
+    }
+    .some2{
+        background-color: var(--white);
+    }
+}
