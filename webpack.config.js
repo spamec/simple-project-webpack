@@ -1,6 +1,7 @@
 const path = require('path');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
-const extractCSS = new ExtractTextPlugin({filename: 'css.bundle.css'})
+const extractCSS = new ExtractTextPlugin({filename: 'css.bundle.css'});
+const postcssCustomProperties = require('postcss-custom-properties');
 
 module.exports = {
     entry: {
@@ -28,7 +29,18 @@ module.exports = {
                     fallback: 'style-loader',
                     use: [
                         {loader: 'css-loader', options: {importLoaders: 1}},
-                        'postcss-loader'
+                        {
+                            loader: 'postcss-loader', options: {
+                                ident: 'postcss',
+                                plugins: () => [
+                                    postcssCustomProperties(/* pluginOptions */),
+                                    require('cssnano')({
+                                        preset: 'default'
+                                    })
+                                ]
+                            }
+                        }
+
                     ]
                 })
             }
